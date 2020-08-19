@@ -15,6 +15,6 @@ def calculate_sum():
     return render_template(
         'base.html', num1=num1, num2=num2, sum=sum
     )
-    # user has inputted numbers
+    # user has inputted numbersls
     if request.method == 'POST':
         return redirect(url_for('calculate_sum'))
