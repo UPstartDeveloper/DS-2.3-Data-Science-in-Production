@@ -1,20 +1,40 @@
-from flask import Flask, request, render_template, redirect, url_for
-
+from flask import Flask, render_template, request
+import math
+from wtforms import Form, FloatField, validators
+# from compute import compute
 
 app = Flask(__name__)
 
+# computation
+def compute(r):
+    return math.sin(r)
+# Model
+class InputForm(Form):
+    r = FloatField(validators=[validators.InputRequired()])
 
-@app.route("/", methods=['GET', 'POST'])
-def calculate_sum():
-    num1 = request.form.get('num1')
-    num2 = request.form.get('num2')
-    if num1 and num2:
-        sum = float(num1) + float(num2)
+# View
+"""
+@app.route('/hw1', methods=['GET', 'POST'])
+def index():
+    form = InputForm(request.form)
+    if request.method == 'POST' and form.validate():
+        r = form.r.data
+        s = compute(r)
+        return render_template("view-output.html", form=form, s=s)
     else:
-        sum = 'Not defined'
-    return render_template(
-        'base.html', num1=num1, num2=num2, sum=sum
-    )
-    # user has inputted numbersls
-    if request.method == 'POST':
-        return redirect(url_for('calculate_sum'))
+        return render_template("view-input.html", form=form)
+"""
+
+@app.route('/hw2', methods=['GET', 'POST'])
+def index():
+    form = InputForm(request.form)
+    if request.method == 'POST' and form.validate():
+        r = form.r.data
+        s = compute(r)
+    else:
+        s = None
+
+    return render_template("view.html", form=form, s=s)
+
+if __name__ == '__main__':
+    app.run(debug=True)
