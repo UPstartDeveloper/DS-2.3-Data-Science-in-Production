@@ -73,12 +73,6 @@ model.fit(x_train, y_train,
           validation_data=(x_test, y_test))
 # model.save('my_model.h5')
 
-# Save the weights
-model.save_weights('model_weights.h5')
-# Save the model architecture
-with open('model_architecture.json', 'w') as f:
-    f.write(model.to_json())
-
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
@@ -90,6 +84,8 @@ out = model.predict(x)
 print(out[0])
 print(np.argmax(out[0]))
 
-
-"""# test the model on image 35 (it's a six)
-model.precit"""
+# Save the weights
+model.save_weights('model_weights.h5')
+# Save the model architecture
+with open('model_architecture.json', 'w') as f:
+    f.write(model.to_json())

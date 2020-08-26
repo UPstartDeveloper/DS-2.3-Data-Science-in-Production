@@ -52,7 +52,7 @@ class CNNPrediction(Resource):
         image_red = img.resize((28, 28))  # reshape for the model dimension requirements
         image = img_to_array(image_red)
         print(image.shape)
-        x = image.reshape(1, 28, 28, 1)
+        x = image.reshape(1, 28, 28, 1)  # 1 image of 28x28 pixels, 1 channel (grayscale)
         x = x/255  # data normalization
         # This is not good, because this code implies that the model will be
         # loaded each and every time a new request comes in.
