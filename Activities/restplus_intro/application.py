@@ -9,7 +9,7 @@ from flask_restplus import Api, fields, Resource
 
 
 # instantiate Flask app and API - in same file for now
-app = Flask(__name__)
+application = app = Flask(__name__)
 api = Api(app)
 
 # languages for the HTTP responses
