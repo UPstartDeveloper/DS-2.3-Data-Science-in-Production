@@ -6,6 +6,13 @@ import werkzeug
 # Note: line 6 must happen BEFORE you import Flask to be able to work!
 werkzeug.cached_property = werkzeug.utils.cached_property
 
+# import for time objects
+import datetime as dt 
+
+# import for Firebase services
+import firebase_admin
+from firebase_admin import credentials, firestore
+
 from tensorflow import keras
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
@@ -17,6 +24,12 @@ from PIL import Image
 from keras.models import model_from_json
 import tensorflow as tf
 
+# init the Firebase SDK
+cred = credentials.Certificate(
+    'ds23-hw2-1d580-firebase-adminsdk-8gqfi-f436991c85.json')
+firebase_app = firebase_admin.initialize_app(cred)
+# init Cloud Firestore
+db = firestore.client()
 
 application = app = Flask(__name__)
 api = Api(app, version='1.0', title='MNIST Classification', description='CNN for Mnist')
@@ -39,6 +52,7 @@ with open('model_architecture.json', 'r') as f:
 # Load weights into the new model
 model.load_weights('model_weights.h5')
 graph = tf.get_default_graph()  # good to add
+
 
 @ns.route('/prediction')
 class CNNPrediction(Resource):
@@ -63,9 +77,20 @@ class CNNPrediction(Resource):
             out = model.predict(x)
         print(out[0])
         print(np.argmax(out[0]))
-        r = np.argmax(out[0])
+        r = str(np.argmax(out[0]))
+
+        # write to the Cloudstore instance db
+        date = str(dt.datetime.now())
+        data = {
+            u'date': date,
+            u'file_name': u'posted_img.png',
+            u'result': r  # represents the prediction of model
+        }
+        # Add a new doc in collection 'Predictions' with date as the ID
+        db.collection(u'predictions').document(date).set(data)
+
         # return the classification
-        return {'prediction': str(r)}
+        return {'prediction': r}
 
 
 if __name__ == '__main__':

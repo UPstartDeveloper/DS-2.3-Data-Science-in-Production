@@ -10,6 +10,9 @@ __pycache__/
 .DS_Store
 .vscode
 
+# Firebase stuff
+ds23-hw2-1d580-firebase-adminsdk-8gqfi-f436991c85.json
+
 # Distribution / packaging
 .Python
 build/
