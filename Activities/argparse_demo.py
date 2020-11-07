@@ -25,7 +25,7 @@ if __name__ == '__main__':
     if args.quiet:
         print(volume)
     elif args.verbose:
-        print(f'Volume of a cylinder with radius {radius} amd height {height} is {volume}')
+        print(f'Volume of a cylinder with radius {args.radius} amd height {args.height} is {volume}')
     else:
         print(f'Volume of a cylinder is {volume}')
     
